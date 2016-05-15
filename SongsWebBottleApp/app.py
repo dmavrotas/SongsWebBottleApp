@@ -3,11 +3,14 @@ This script runs the application using a development server.
 """
 
 import bottle
+import pymysql as db
+import settings
 import os
 import sys
 
 # routes contains the HTTP handlers for our server and must be imported.
 import routes
+import database_interaction as db
 
 if '--debug' in sys.argv[1:] or 'SERVER_DEBUG' in os.environ:
     # Debug mode will enable more verbose output in the console window.
@@ -35,5 +38,9 @@ if __name__ == '__main__':
         the server should be configured to serve the static files."""
         return bottle.static_file(filepath, root=STATIC_ROOT)
 
+    result = db.selectArtists(None, None, None, None, None)
+
     # Starts a local test server.
     bottle.run(server='wsgiref', host=HOST, port=PORT)
+
+
