@@ -94,7 +94,7 @@ def updateArtist(id, name, surname, birthyear) :
             updateQuery += " , "
         updateQuery += " ETOS_GEN = %d "
 
-    updateQuery += " WHERE = '%s' "
+    updateQuery += " WHERE AR_TAUT = '%s' "
 
     parameters = [] 
 
@@ -230,8 +230,111 @@ def selectSongs(title, composer, prodyear, songwriter) :
         return result
         con.close()
 
-#def updateSong() :
+def updateSong(title, composer, prodyear, songwriter) :
+    con = connection()
 
-#def deleteSong() :
+    cur = con.cursor()
 
-#def insertSong() :
+    if title != None :
+        updateQuery = " UPDATE tragoudi SET "
+    else :
+        return
+
+    if composer != None :
+        updateQuery += " SINTHETIS = '%s' "
+    if prodyear != None :
+        if composer != None :
+            updateQuery += " , "
+        updateQuery += " ETOS_PAR = '%s' "
+    if songwriter != None :
+        if composer != None or prodyear != None :
+            updateQuery += " , "
+        updateQuery += " STIXOURGOS = '%d' "
+
+    updateQuery += " WHERE TITLOS = '%s' "
+
+    parameters = [] 
+
+    if composer != None :
+        parameters.append(composer)
+    if prodyear != None :
+        parameters.append(prodyear)
+    if songwriter != None :
+        parameters.append(songwriter)
+    if title != None :
+        parameters.append(title)
+
+    try:
+        cur.execute(updateQuery, parameters)
+    finally:
+        con.commit()
+        con.close()
+        return [("STATUS"), ("OK")]    
+
+def deleteSong(title) :
+    con = connection()
+
+    cur = con.cursor()
+
+    if title != None :
+        deleteQuery = " DELETE FROM tragoudi WHERE "
+    else :
+        return
+
+    if title != None :
+        deleteQuery += " TITLOS = '%s' "
+
+    parameters = [] 
+
+    if title != None :
+        parameters.append(title)
+
+    try:
+        cur.execute(deleteQuery, parameters)
+    finally:
+        con.commit()
+        con.close()
+        return [("STATUS"), ("OK")]    
+
+def insertSong(title, composer, prodyear, songwriter) :
+    con = connection()
+
+    cur = con.cursor()
+
+    if title != None :
+        insertQuery = " INSERT INTO tragoudi (TITLOS, SINTHETIS, ETOS_PAR, STIXOURGOS) VALUES "
+    else :
+        return
+    
+    if title != None :
+        insertQuery += " ( '%s' "
+    if composer != None :
+        if title != None :
+            insertQuery += " , "
+        insertQuery += " ( '%s', "
+    if prodyear != None :
+        if title != None or composer != None :
+            insertQuery += " , "
+        insertQuery += " '%s' "
+    if songwriter != None :
+        if title != None or composer != None or prodyear != None :
+            insertQuery += " , "
+        insertQuery += " %d )"
+
+    parameters = [] 
+
+    if title != None :
+        parameters.append(title)
+    if composer != None :
+        parameters.append(composer)
+    if prodyear != None :
+        parameters.append(prodyear)
+    if songwriter != None :
+        parameters.append(songwriter)
+
+    try:
+        cur.execute(insertQuery, parameters)
+    finally:
+        con.commit()
+        con.close()
+        return [("STATUS"), ("OK")] 
