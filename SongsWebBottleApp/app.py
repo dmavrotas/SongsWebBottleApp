@@ -38,8 +38,6 @@ if __name__ == '__main__':
         the server should be configured to serve the static files."""
         return bottle.static_file(filepath, root=STATIC_ROOT)
 
-    result = db.selectArtists(None, None, None, None, None)
-
     # Starts a local test server.
     bottle.run(server='wsgiref', host=HOST, port=PORT)
 

@@ -32,13 +32,59 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.py" />
+    <Compile Include="Lib\bottle.py" />
     <Compile Include="database_interaction.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Lib\pymysql\charset.py" />
+    <Compile Include="Lib\pymysql\connections.py" />
+    <Compile Include="Lib\pymysql\constants\CLIENT.py" />
+    <Compile Include="Lib\pymysql\constants\COMMAND.py" />
+    <Compile Include="Lib\pymysql\constants\CR.py" />
+    <Compile Include="Lib\pymysql\constants\ER.py" />
+    <Compile Include="Lib\pymysql\constants\FIELD_TYPE.py" />
+    <Compile Include="Lib\pymysql\constants\FLAG.py" />
+    <Compile Include="Lib\pymysql\constants\SERVER_STATUS.py" />
+    <Compile Include="Lib\pymysql\constants\__init__.py" />
+    <Compile Include="Lib\pymysql\converters.py" />
+    <Compile Include="Lib\pymysql\cursors.py" />
+    <Compile Include="Lib\pymysql\err.py" />
+    <Compile Include="Lib\pymysql\optionfile.py" />
+    <Compile Include="Lib\pymysql\tests\base.py" />
+    <Compile Include="Lib\pymysql\tests\test_basic.py" />
+    <Compile Include="Lib\pymysql\tests\test_connection.py" />
+    <Compile Include="Lib\pymysql\tests\test_converters.py" />
+    <Compile Include="Lib\pymysql\tests\test_cursor.py" />
+    <Compile Include="Lib\pymysql\tests\test_DictCursor.py" />
+    <Compile Include="Lib\pymysql\tests\test_example.py" />
+    <Compile Include="Lib\pymysql\tests\test_issues.py" />
+    <Compile Include="Lib\pymysql\tests\test_load_local.py" />
+    <Compile Include="Lib\pymysql\tests\test_nextset.py" />
+    <Compile Include="Lib\pymysql\tests\test_optionfile.py" />
+    <Compile Include="Lib\pymysql\tests\test_SSCursor.py" />
+    <Compile Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\capabilities.py" />
+    <Compile Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\dbapi20.py" />
+    <Compile Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\test_MySQLdb_capabilities.py" />
+    <Compile Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\test_MySQLdb_dbapi20.py" />
+    <Compile Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\test_MySQLdb_nonstandard.py" />
+    <Compile Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\__init__.py" />
+    <Compile Include="Lib\pymysql\tests\thirdparty\__init__.py" />
+    <Compile Include="Lib\pymysql\tests\__init__.py" />
+    <Compile Include="Lib\pymysql\times.py" />
+    <Compile Include="Lib\pymysql\util.py" />
+    <Compile Include="Lib\pymysql\_compat.py" />
+    <Compile Include="Lib\pymysql\_socketio.py" />
+    <Compile Include="Lib\pymysql\__init__.py" />
     <Compile Include="routes.py" />
     <Compile Include="settings.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Lib\" />
+    <Folder Include="Lib\pymysql\" />
+    <Folder Include="Lib\pymysql\constants\" />
+    <Folder Include="Lib\pymysql\tests\" />
+    <Folder Include="Lib\pymysql\tests\thirdparty\" />
+    <Folder Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\" />
     <Folder Include="static\" />
     <Folder Include="static\content\" />
     <Folder Include="static\fonts\" />
@@ -46,6 +92,45 @@
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Lib\pymysql\charset.pyc" />
+    <Content Include="Lib\pymysql\connections.pyc" />
+    <Content Include="Lib\pymysql\constants\CLIENT.pyc" />
+    <Content Include="Lib\pymysql\constants\COMMAND.pyc" />
+    <Content Include="Lib\pymysql\constants\CR.pyc" />
+    <Content Include="Lib\pymysql\constants\ER.pyc" />
+    <Content Include="Lib\pymysql\constants\FIELD_TYPE.pyc" />
+    <Content Include="Lib\pymysql\constants\FLAG.pyc" />
+    <Content Include="Lib\pymysql\constants\SERVER_STATUS.pyc" />
+    <Content Include="Lib\pymysql\constants\__init__.pyc" />
+    <Content Include="Lib\pymysql\converters.pyc" />
+    <Content Include="Lib\pymysql\cursors.pyc" />
+    <Content Include="Lib\pymysql\err.pyc" />
+    <Content Include="Lib\pymysql\optionfile.pyc" />
+    <Content Include="Lib\pymysql\tests\base.pyc" />
+    <Content Include="Lib\pymysql\tests\test_basic.pyc" />
+    <Content Include="Lib\pymysql\tests\test_connection.pyc" />
+    <Content Include="Lib\pymysql\tests\test_converters.pyc" />
+    <Content Include="Lib\pymysql\tests\test_cursor.pyc" />
+    <Content Include="Lib\pymysql\tests\test_DictCursor.pyc" />
+    <Content Include="Lib\pymysql\tests\test_example.pyc" />
+    <Content Include="Lib\pymysql\tests\test_issues.pyc" />
+    <Content Include="Lib\pymysql\tests\test_load_local.pyc" />
+    <Content Include="Lib\pymysql\tests\test_nextset.pyc" />
+    <Content Include="Lib\pymysql\tests\test_optionfile.pyc" />
+    <Content Include="Lib\pymysql\tests\test_SSCursor.pyc" />
+    <Content Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\capabilities.pyc" />
+    <Content Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\dbapi20.pyc" />
+    <Content Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\test_MySQLdb_capabilities.pyc" />
+    <Content Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\test_MySQLdb_dbapi20.pyc" />
+    <Content Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\test_MySQLdb_nonstandard.pyc" />
+    <Content Include="Lib\pymysql\tests\thirdparty\test_MySQLdb\__init__.pyc" />
+    <Content Include="Lib\pymysql\tests\thirdparty\__init__.pyc" />
+    <Content Include="Lib\pymysql\tests\__init__.pyc" />
+    <Content Include="Lib\pymysql\times.pyc" />
+    <Content Include="Lib\pymysql\util.pyc" />
+    <Content Include="Lib\pymysql\_compat.pyc" />
+    <Content Include="Lib\pymysql\_socketio.pyc" />
+    <Content Include="Lib\pymysql\__init__.pyc" />
     <Content Include="requirements.txt" />
     <Content Include="static\content\bootstrap.css" />
     <Content Include="static\content\bootstrap.min.css" />

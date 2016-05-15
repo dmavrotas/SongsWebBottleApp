@@ -13,6 +13,7 @@ def connection() :
         settings.mysql_schema)
     return con
 
+# Queries about artists
 def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
     con = connection()
 
@@ -20,7 +21,7 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
 
     whereClause = " WHERE "
 
-    fromClause = " FROM %s.kalitexnis k "
+    fromClause = " FROM kalitexnis k "
 
     if name == None and surname == None and birthyearFrom == None and birthyearTo == None and artistType == None : 
         whereClause = ""
@@ -34,11 +35,11 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
     if birthyearFrom != None :
         if name != None or surname != None :
             whereClause += " AND "
-        whereClause += " ETOS_GEN >= TO_DATE('%s', 'DD-MM-YYYY') "
+        whereClause += " ETOS_GEN >= %d "
     if birthyearTo != None :
         if name != None or surname != None or birthyearFrom != None :
             whereClause += " AND "
-        whereClause += " ETOS_GEN <= TO_DATE('%s', 'DD-MM-YYYY') "
+        whereClause += " ETOS_GEN <= %d "
 
     # artistType = 1 --> singer
     # artistType = 2 --> song writer
@@ -46,15 +47,15 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
 
     if artistType != None :
         if artistType == 1 :
-            fromClause += " INNER JOIN %s.singer_prod sp ON k.ar_taut = sp.tragoudistis "
+            fromClause += " INNER JOIN singer_prod sp ON k.ar_taut = sp.tragoudistis "
         elif artistType == 2 : 
-            fromClause += " INNER JOIN %s.tragoudi tr ON k.ar_taut = tr.stixourgos "
+            fromClause += " INNER JOIN tragoudi tr ON k.ar_taut = tr.stixourgos "
         elif artistType == 3 : 
-            fromClause += " INNER JOIN %s.tragoudi tr ON k.ar_taut = tr.sinthetis "
+            fromClause += " INNER JOIN tragoudi tr ON k.ar_taut = tr.sinthetis "
 
     selectClause = " SELECT k.ar_taut, k.onoma, k.epitheto, k.etos_gen "
 
-    parameters = [ settings.mysql_schema ]
+    parameters = []
 
     if name != None :
         parameters.append(name)
@@ -68,12 +69,169 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
     try :
         cur.execute(selectClause + fromClause + whereClause, (parameters))
     finally :
-        return cur.fetchall()
+        result = cur.fetchall()
+        return result;
         con.close()
 
-def selectSongs() :
+def updateArtist(id, name, surname, birthyear) :
+    con = connection()
 
+    cur = con.cursor()
 
-        
+    if id != None :
+        updateQuery = " UPDATE kalitexnis SET "
+    else :
+        return
 
+    if name != None :
+        updateQuery += " ONOMA = '%s' "
+    if surname != None :
+        if name != None :
+            updateQuery += " , "
+        updateQuery += " EPITHETO = '%s' "
+    if birthyear != None :
+        if name != None or surname != None :
+            updateQuery += " , "
+        updateQuery += " ETOS_GEN = %d "
 
+    updateQuery += " WHERE = '%s' "
+
+    parameters = [] 
+
+    if name != None :
+        parameters.append(name)
+    if surname != None :
+        parameters.append(surname)
+    if birthyear != None :
+        parameters.append(birthyear)
+    if id != None :
+        parameters.append(id)
+
+    try:
+        cur.execute(updateQuery, parameters)
+    finally:
+        con.commit()
+        con.close()
+        return [("STATUS"), ("OK")]    
+
+def deleteArtist(id) :
+    con = connection()
+
+    cur = con.cursor()
+
+    if id != None :
+        deleteQuery = " DELETE FROM kalitexnis WHERE "
+    else :
+        return
+
+    if id != None :
+        deleteQuery += " AR_TAUT = '%s' "
+
+    parameters = [] 
+
+    if id != None :
+        parameters.append(id)
+
+    try:
+        cur.execute(deleteQuery, parameters)
+    finally:
+        con.commit()
+        con.close()
+        return [("STATUS"), ("OK")]    
+
+def insertArtist(id, name, surname, birthyear) :
+    con = connection()
+
+    cur = con.cursor()
+
+    if id != None :
+        insertQuery = " INSERT INTO kalitexnis (AR_TAUT, ONOMA, EPITHETO, ETOS_GEN) VALUES "
+    else :
+        return
+    
+    if id != None :
+        insertQuery += " ( '%s' "
+    if name != None :
+        if id != None :
+            insertQuery += " , "
+        insertQuery += " ( '%s', "
+    if surname != None :
+        if id != None or name != None :
+            insertQuery += " , "
+        insertQuery += " '%s' "
+    if birthyear != None :
+        if id != None or name != None or surname != None :
+            insertQuery += " , "
+        insertQuery += " %d )"
+
+    parameters = [] 
+
+    if id != None :
+        parameters.append(id)
+    if name != None :
+        parameters.append(name)
+    if surname != None :
+        parameters.append(surname)
+    if birthyear != None :
+        parameters.append(birthyear)
+
+    try:
+        cur.execute(insertQuery, parameters)
+    finally:
+        con.commit()
+        con.close()
+        return [("STATUS"), ("OK")]    
+
+# Queries about songs
+def selectSongs(title, composer, prodyear, songwriter) :
+    con = connection()
+
+    cur = con.cursor()
+
+    whereClause = " WHERE "
+
+    fromClause = " FROM tragoudi t "
+
+    if title == None and composer == None and prodyear == None and songwriter == None :
+        whereClause = ""
+
+    if title != None :
+        whereClause += " TITLOS = '%s' "
+    if composer != None :
+        if title != None :
+            whereClause += " AND "
+        whereClause += " SINTHETIS = '%s' "
+    if prodyear != None :
+        if title != None or composer != None :
+            whereClause += " AND "
+        whereClause += " ETOS_PAR = %d "
+    if songwriter != None :
+        if title != None or composer != None or songwriter != None :
+            whereClause += " AND "
+        whereClause += " STIXOURGOS = %s "
+       
+    selectClause = " SELECT t.titlos, t.sinthetis, t.etos_par, t.stixourgos "
+
+    parameters = []
+
+    if title != None :
+        parameters.append(title)
+    if composer != None :
+        parameters.append(composer)
+    if prodyear != None :
+        parameters.append(prodyear)
+    if songwriter != None :
+        parameters.append(songwriter) 
+
+    try:
+        cur.execute(selectClause + fromClause + whereClause, (parameters))
+    finally:
+        result = cur.fetchall()
+        return result
+        con.close()
+
+#def updateSong() :
+
+#def deleteSong() :
+
+#def insertSong() :
