@@ -39,7 +39,7 @@ def about():
 def artists():
     """Renders the update and search artists page."""
     return dict(
-        title='Update and Search',
-        message='Your update and search artists page',
+        title='Artists',
+        message='Your update and search artists page.',
         year=datetime.now().year
     )
