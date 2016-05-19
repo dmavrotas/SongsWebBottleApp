@@ -14,6 +14,26 @@ def home():
         year=datetime.now().year
     )
 
+@route('/artists')
+@view('artistsselect')
+def artistsselect():
+    """Renders the update and search artists page."""
+    return dict(
+        title='Artists',
+        message='Your update and search artists page.',
+        year=datetime.now().year
+    )
+
+@route('/artistsview')
+@view('artistsview')
+def artistsview():
+    """Renders the presentation of artists page."""
+    return dict(
+        title='Artists',
+        message='Your update and search artists page.',
+        year=datetime.now().year
+    )
+
 #@route('/contact')
 #@view('contact')
 #def contact():
@@ -33,13 +53,3 @@ def home():
 #        message='Your application description page.',
 #        year=datetime.now().year
 #    )
-
-@route('/artists')
-@view('artists')
-def artists():
-    """Renders the update and search artists page."""
-    return dict(
-        title='Artists',
-        message='Your update and search artists page.',
-        year=datetime.now().year
-    )
