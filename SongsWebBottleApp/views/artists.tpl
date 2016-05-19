@@ -1,16 +1,25 @@
 % rebase('layout.tpl', title=title, year=year)
 
-<h2>{{ title }}.</h2>
-<h3>{{ message }}</h3>
+<html>
+<head>
+    <title>Update &amp; Search Artists</title>
+</head>
+<body>
+    <table width="100%" height="100%" border='0' align="center">
+        <tr>
+            <td>
+                <h2>Update &amp Search Artists</h2>
+                <form>
+                    Plane id            : <input type="text" class="toSubmit" name="pid" /><br />
+                    Departure Airport id: <input type="text" class="toSubmit" name="did" /><br />
+                    Arrival Airport id  : <input type="text" class="toSubmit" name="aid" /><br />
+                    Date                : <input type="text" class="toSubmit" name="date" /><br />
+                    flight id           : <input type="text" class="toSubmit" name="fid" /><br />
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
-
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+                    <input type="button" name="button" value="Insert" onClick="submitForm(this.form, 'insertData')" />
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
