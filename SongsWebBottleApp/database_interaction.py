@@ -10,7 +10,8 @@ def connection() :
         settings.mysql_host,
         settings.mysql_user,
         settings.mysql_passwd,
-        settings.mysql_schema)
+        settings.mysql_schema,
+        charset='utf8')
     return con
 
 # Queries about artists
@@ -22,22 +23,22 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
     whereClause = " WHERE "
 
     fromClause = " FROM kalitexnis k "
-
-    if name == None and surname == None and birthyearFrom == None and birthyearTo == None and artistType == None : 
+    
+    if not name and not surname and not birthyearFrom and not birthyearTo : 
         whereClause = ""
 
-    if name != None :
+    if name :
         whereClause += " ONOMA = '%s' "
-    if surname != None :
-        if name != None :
+    if surname :
+        if name :
             whereClause += " AND "
         whereClause += " EPITHETO = '%s' "
-    if birthyearFrom != None :
-        if name != None or surname != None :
+    if birthyearFrom :
+        if name  or surname :
             whereClause += " AND "
         whereClause += " ETOS_GEN >= %d "
-    if birthyearTo != None :
-        if name != None or surname != None or birthyearFrom != None :
+    if birthyearTo :
+        if name or surname or birthyearFrom :
             whereClause += " AND "
         whereClause += " ETOS_GEN <= %d "
 
@@ -45,25 +46,25 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
     # artistType = 2 --> song writer
     # artistType = 3 --> composer
 
-    if artistType != None :
-        if artistType == 1 :
+    if artistType :
+        if artistType == '1' :
             fromClause += " INNER JOIN singer_prod sp ON k.ar_taut = sp.tragoudistis "
-        elif artistType == 2 : 
+        elif artistType == '2' : 
             fromClause += " INNER JOIN tragoudi tr ON k.ar_taut = tr.stixourgos "
-        elif artistType == 3 : 
+        elif artistType == '3' : 
             fromClause += " INNER JOIN tragoudi tr ON k.ar_taut = tr.sinthetis "
 
-    selectClause = " SELECT k.ar_taut, k.onoma, k.epitheto, k.etos_gen "
+    selectClause = " SELECT DISTINCT k.ar_taut, k.onoma, k.epitheto, k.etos_gen "
 
     parameters = []
 
-    if name != None :
+    if name :
         parameters.append(name)
-    if surname != None :
+    if surname :
         parameters.append(surname)
-    if birthyearFrom != None :
+    if birthyearFrom :
         parameters.append(birthyearFrom)
-    if birthyearTo != None :
+    if birthyearTo :
         parameters.append(birthyearTo)
 
     try :

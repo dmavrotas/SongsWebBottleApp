@@ -2,8 +2,9 @@
 Routes and views for the bottle application.
 """
 
-from bottle import route, view
+from bottle import route, view, request, app, template
 from datetime import datetime
+import database_interaction as db
 
 @route('/')
 @route('/home')
@@ -14,42 +15,17 @@ def home():
         year=datetime.now().year
     )
 
-@route('/artists')
+@route('/artists', method=['GET'])
 @view('artistsselect')
 def artistsselect():
-    """Renders the update and search artists page."""
-    return dict(
-        title='Artists',
-        message='Your update and search artists page.',
-        year=datetime.now().year
-    )
+    if request.GET.get('submitNew','').strip():
+        result = db.selectArtists(request.GET.get('name').strip(), request.GET.get('surname').strip(), request.GET.get('byfrom').strip(), request.GET.get('byto').strip(), request.GET.get('artisttype').strip())
+        output = template('artistsview', rows=result)
+        return output
+    else:
+        return template('artistsselect')
 
 @route('/artistsview')
 @view('artistsview')
 def artistsview():
-    """Renders the presentation of artists page."""
-    return dict(
-        title='Artists',
-        message='Your update and search artists page.',
-        year=datetime.now().year
-    )
-
-#@route('/contact')
-#@view('contact')
-#def contact():
-#    """Renders the contact page."""
-#    return dict(
-#        title='Contact',
-#        message='Your contact page.',
-#        year=datetime.now().year
-#    )
-
-#@route('/about')
-#@view('about')
-#def about():
-#    """Renders the about page."""
-#    return dict(
-#        title='About',
-#        message='Your application description page.',
-#        year=datetime.now().year
-#    )
+    return template('artistsview')

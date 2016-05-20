@@ -1,4 +1,4 @@
-% rebase('layout.tpl', title=title, year=year)
+% rebase('layout.tpl')
 
 <html>
 <head>
@@ -17,24 +17,41 @@
     </script>
 </head>
 <body>
-    <table width="100%" height="100%" border='0' align="center">
+    <h2>Presentation of Artists</h2>
+    <form action="/artists" method="get"/>
+    <table width="50%" height="100%" border='0' align="center">
         <tr>
+            <td>Name:</td>
+            <td> <input id="nameid" type="text" class="toNavigate" name="name" /> </td>
+        </tr>
+        <tr>
+            <td>Surname:</td>
+            <td> <input id="surnameid" type="text" class="toNavigate" name="surname" /> </td>
+        </tr>
+        <tr>
+            <td>Birth Year - From:</td>
+            <td> <input id="bdfid" type="text" class="toNavigate" name="byfrom" /> </td>
+        </tr>
+        <tr>
+            <td>Birth Year - To:</td>
+            <td> <input id="bdtid" type="text" class="toNavigate" name="byto" /> </td>
+        </tr>
+        <tr>
+            <td>Type</td>
             <td>
-                <h2>Presentation of Artists</h2>
-                <form>
-                    Name: <input type="text" class="toNavigate" name="name" /><br />
-                    Surname: <input type="text" class="toNavigate" name="surname" /><br />
-                    Birth Year - From: <input type="text" class="toNavigate" name="byfrom" /><br />
-                    Birth Year - To: <input type="text" class="toNavigate" name="byto" /><br />
-                    <select id="artisttypes" class="toNavigate">
-                        <option value="1">Singer</option>
-                        <option value="2">Song Writer</option>
-                        <option value="3">Composer</option>
-                    </select> <br />
-                    <input type="button" name="button" value="Submit" onClick="submitForm(this.form, 'artistsview')" /> 
-                </form>
+                <select id="atid" name="artisttype" class="toNavigate">
+                    <option value="1">Singer</option>
+                    <option value="2">Song Writer</option>
+                    <option value="3">Composer</option>
+                </select>
             </td>
         </tr>
     </table>
+    <br/>
+    <br/>
+    <div style="text-align:center">
+        <!--<a class="btn btn-default" href="\artistsview">Submit &raquo;</a>-->
+        <input type="submit" name="submitNew" value="submitNew"/>
+    </div>
 </body>
 </html>
