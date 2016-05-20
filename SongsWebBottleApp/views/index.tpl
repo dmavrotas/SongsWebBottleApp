@@ -12,7 +12,7 @@
         <p>
             Open and edit the presentation of artists that exist in the Database.
         </p>
-        <p><a class="btn btn-default" href="\artists">Artists &raquo;</a></p>
+        <p><a class="btn btn-default" href="\artists">Presentation of Artists &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2>Get more libraries</h2>
