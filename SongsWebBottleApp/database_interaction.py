@@ -25,22 +25,22 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
     fromClause = " FROM kalitexnis k "
     
     if not name and not surname and not birthyearFrom and not birthyearTo : 
-        whereClause = ""
+        whereClause = ''
 
     if name :
-        whereClause += " ONOMA = '%s' "
+        whereClause += " ONOMA = %s "
     if surname :
         if name :
             whereClause += " AND "
-        whereClause += " EPITHETO = '%s' "
+        whereClause += " EPITHETO = %s "
     if birthyearFrom :
         if name  or surname :
             whereClause += " AND "
-        whereClause += " ETOS_GEN >= %d "
+        whereClause += " ETOS_GEN >= CAST(%s AS UNSIGNED) "
     if birthyearTo :
         if name or surname or birthyearFrom :
             whereClause += " AND "
-        whereClause += " ETOS_GEN <= %d "
+        whereClause += " ETOS_GEN <= CAST(%s AS UNSIGNED) "
 
     # artistType = 1 --> singer
     # artistType = 2 --> song writer
@@ -68,7 +68,7 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
         parameters.append(birthyearTo)
 
     try :
-        cur.execute(selectClause + fromClause + whereClause, (parameters))
+        cur.execute(selectClause + fromClause + whereClause.strip(), (parameters))
     finally :
         result = cur.fetchall()
         return result;
@@ -79,23 +79,23 @@ def updateArtist(id, name, surname, birthyear) :
 
     cur = con.cursor()
 
-    if id != None :
+    if id :
         updateQuery = " UPDATE kalitexnis SET "
     else :
         return
 
-    if name != None :
-        updateQuery += " ONOMA = '%s' "
-    if surname != None :
-        if name != None :
+    if name :
+        updateQuery += " ONOMA = %s "
+    if surname :
+        if name :
             updateQuery += " , "
-        updateQuery += " EPITHETO = '%s' "
-    if birthyear != None :
-        if name != None or surname != None :
+        updateQuery += " EPITHETO = %s "
+    if birthyear :
+        if name or surname :
             updateQuery += " , "
-        updateQuery += " ETOS_GEN = %d "
+        updateQuery += " ETOS_GEN = CAST(%s AS UNSIGNED) "
 
-    updateQuery += " WHERE AR_TAUT = '%s' "
+    updateQuery += " WHERE AR_TAUT = %s "
 
     parameters = [] 
 
@@ -120,17 +120,17 @@ def deleteArtist(id) :
 
     cur = con.cursor()
 
-    if id != None :
+    if id :
         deleteQuery = " DELETE FROM kalitexnis WHERE "
     else :
         return
 
-    if id != None :
-        deleteQuery += " AR_TAUT = '%s' "
+    if id :
+        deleteQuery += " AR_TAUT = %s "
 
     parameters = [] 
 
-    if id != None :
+    if id :
         parameters.append(id)
 
     try:
@@ -145,35 +145,35 @@ def insertArtist(id, name, surname, birthyear) :
 
     cur = con.cursor()
 
-    if id != None :
+    if id :
         insertQuery = " INSERT INTO kalitexnis (AR_TAUT, ONOMA, EPITHETO, ETOS_GEN) VALUES "
     else :
         return
     
-    if id != None :
-        insertQuery += " ( '%s' "
-    if name != None :
-        if id != None :
+    if id :
+        insertQuery += " ( %s "
+    if name :
+        if id :
             insertQuery += " , "
-        insertQuery += " ( '%s', "
-    if surname != None :
-        if id != None or name != None :
+        insertQuery += " ( %s, "
+    if surname :
+        if id or name :
             insertQuery += " , "
-        insertQuery += " '%s' "
-    if birthyear != None :
-        if id != None or name != None or surname != None :
+        insertQuery += " %s "
+    if birthyear :
+        if id or name or surname :
             insertQuery += " , "
-        insertQuery += " %d )"
+        insertQuery += " CAST(%s AS UNSIGNED) )"
 
     parameters = [] 
 
-    if id != None :
+    if id :
         parameters.append(id)
-    if name != None :
+    if name :
         parameters.append(name)
-    if surname != None :
+    if surname :
         parameters.append(surname)
-    if birthyear != None :
+    if birthyear :
         parameters.append(birthyear)
 
     try:
@@ -193,21 +193,21 @@ def selectSongs(title, composer, prodyear, songwriter) :
 
     fromClause = " FROM tragoudi t "
 
-    if title == None and composer == None and prodyear == None and songwriter == None :
+    if not title and not composer and not prodyear and not songwriter :
         whereClause = ""
 
-    if title != None :
-        whereClause += " TITLOS = '%s' "
-    if composer != None :
-        if title != None :
+    if title :
+        whereClause += " TITLOS = %s "
+    if composer :
+        if title :
             whereClause += " AND "
-        whereClause += " SINTHETIS = '%s' "
-    if prodyear != None :
-        if title != None or composer != None :
+        whereClause += " SINTHETIS = %s "
+    if prodyear :
+        if title or composer :
             whereClause += " AND "
-        whereClause += " ETOS_PAR = %d "
-    if songwriter != None :
-        if title != None or composer != None or songwriter != None :
+        whereClause += " ETOS_PAR = CAST(%s AS UNSIGNED) "
+    if songwriter :
+        if title or composer or songwriter :
             whereClause += " AND "
         whereClause += " STIXOURGOS = %s "
        
@@ -215,13 +215,13 @@ def selectSongs(title, composer, prodyear, songwriter) :
 
     parameters = []
 
-    if title != None :
+    if title :
         parameters.append(title)
-    if composer != None :
+    if composer :
         parameters.append(composer)
-    if prodyear != None :
+    if prodyear :
         parameters.append(prodyear)
-    if songwriter != None :
+    if songwriter :
         parameters.append(songwriter) 
 
     try:
@@ -236,33 +236,33 @@ def updateSong(title, composer, prodyear, songwriter) :
 
     cur = con.cursor()
 
-    if title != None :
+    if title :
         updateQuery = " UPDATE tragoudi SET "
     else :
         return
 
-    if composer != None :
-        updateQuery += " SINTHETIS = '%s' "
-    if prodyear != None :
-        if composer != None :
+    if composer :
+        updateQuery += " SINTHETIS = %s "
+    if prodyear :
+        if composer :
             updateQuery += " , "
-        updateQuery += " ETOS_PAR = '%s' "
-    if songwriter != None :
-        if composer != None or prodyear != None :
+        updateQuery += " ETOS_PAR = CAST(%s AS UNSIGNED) "
+    if songwriter :
+        if composer or prodyear :
             updateQuery += " , "
-        updateQuery += " STIXOURGOS = '%d' "
+        updateQuery += " %s "
 
-    updateQuery += " WHERE TITLOS = '%s' "
+    updateQuery += " WHERE TITLOS = %s "
 
     parameters = [] 
 
-    if composer != None :
+    if composer :
         parameters.append(composer)
-    if prodyear != None :
+    if prodyear :
         parameters.append(prodyear)
-    if songwriter != None :
+    if songwriter :
         parameters.append(songwriter)
-    if title != None :
+    if title :
         parameters.append(title)
 
     try:
@@ -277,17 +277,17 @@ def deleteSong(title) :
 
     cur = con.cursor()
 
-    if title != None :
+    if title :
         deleteQuery = " DELETE FROM tragoudi WHERE "
     else :
         return
 
-    if title != None :
-        deleteQuery += " TITLOS = '%s' "
+    if title :
+        deleteQuery += " TITLOS = %s "
 
     parameters = [] 
 
-    if title != None :
+    if title :
         parameters.append(title)
 
     try:
@@ -302,35 +302,35 @@ def insertSong(title, composer, prodyear, songwriter) :
 
     cur = con.cursor()
 
-    if title != None :
+    if title :
         insertQuery = " INSERT INTO tragoudi (TITLOS, SINTHETIS, ETOS_PAR, STIXOURGOS) VALUES "
     else :
         return
     
-    if title != None :
-        insertQuery += " ( '%s' "
-    if composer != None :
-        if title != None :
+    if title :
+        insertQuery += " ( %s "
+    if composer :
+        if title :
             insertQuery += " , "
-        insertQuery += " ( '%s', "
-    if prodyear != None :
-        if title != None or composer != None :
+        insertQuery += " ( %s, "
+    if prodyear :
+        if title or composer :
             insertQuery += " , "
-        insertQuery += " '%s' "
-    if songwriter != None :
-        if title != None or composer != None or prodyear != None :
+        insertQuery += " CAST(%s AS UNSIGNED) "
+    if songwriter :
+        if title or composer or prodyear :
             insertQuery += " , "
-        insertQuery += " %d )"
+        insertQuery += " %s )"
 
     parameters = [] 
 
-    if title != None :
+    if title :
         parameters.append(title)
-    if composer != None :
+    if composer :
         parameters.append(composer)
-    if prodyear != None :
+    if prodyear :
         parameters.append(prodyear)
-    if songwriter != None :
+    if songwriter :
         parameters.append(songwriter)
 
     try:

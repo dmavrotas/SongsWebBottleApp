@@ -50,7 +50,6 @@
     <br/>
     <br/>
     <div style="text-align:center">
-        <!--<a class="btn btn-default" href="\artistsview">Submit &raquo;</a>-->
         <input type="submit" name="submitNew" value="submitNew"/>
     </div>
 </body>
