@@ -15,9 +15,11 @@
         <p><a class="btn btn-default" href="\artists">Presentation of Artists &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>The Python Package Index is a repository of software for the Python programming language.</p>
-        <p><a class="btn btn-default" href="\artists">Learn more &raquo;</a></p>
+        <h2>Search Songs</h2>
+        <p>
+            Search songs that exist in the Database.
+        </p>
+        <p><a class="btn btn-default" href="\songs">Presentation of Songs &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2>Microsoft Azure</h2>

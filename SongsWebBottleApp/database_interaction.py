@@ -184,45 +184,41 @@ def insertArtist(id, name, surname, birthyear) :
         return [("STATUS"), ("OK")]    
 
 # Queries about songs
-def selectSongs(title, composer, prodyear, songwriter) :
+def selectSongs(title, company, prodyear) :
     con = connection()
 
     cur = con.cursor()
 
     whereClause = " WHERE "
 
-    fromClause = " FROM tragoudi t "
+    fromClause = " FROM tragoudi T "
 
-    if not title and not composer and not prodyear and not songwriter :
+    if not title and not company and not prodyear :
         whereClause = ""
 
     if title :
-        whereClause += " TITLOS = %s "
-    if composer :
+        whereClause += " T.TITLOS = %s "
+    if company :
         if title :
             whereClause += " AND "
-        whereClause += " SINTHETIS = %s "
+        whereClause += " CD.ETAIREIA = %s "
     if prodyear :
-        if title or composer :
+        if title or company :
             whereClause += " AND "
-        whereClause += " ETOS_PAR = CAST(%s AS UNSIGNED) "
-    if songwriter :
-        if title or composer or songwriter :
-            whereClause += " AND "
-        whereClause += " STIXOURGOS = %s "
+        whereClause += " T.ETOS_PAR = CAST(%s AS UNSIGNED) "
+
+    fromClause += " INNER JOIN SINGER_PROD S ON T.TITLOS = S.TITLE INNER JOIN CD_PRODUCTION CD ON S.CD = CD.CODE_CD "
        
-    selectClause = " SELECT t.titlos, t.sinthetis, t.etos_par, t.stixourgos "
+    selectClause = " SELECT DISTINCT t.titlos, t.sinthetis, t.stixourgos, t.etos_par, cd.etaireia "
 
     parameters = []
 
     if title :
         parameters.append(title)
-    if composer :
-        parameters.append(composer)
+    if company :
+        parameters.append(company)
     if prodyear :
-        parameters.append(prodyear)
-    if songwriter :
-        parameters.append(songwriter) 
+        parameters.append(prodyear) 
 
     try:
         cur.execute(selectClause + fromClause + whereClause, (parameters))

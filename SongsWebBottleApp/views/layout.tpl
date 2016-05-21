@@ -24,6 +24,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/home">Home</a></li>
                     <li><a href="/artists">Update &amp; Search Artists</a></li>
+                    <li><a href="/songs">Search Songs</a></li>
                 </ul>
             </div>
         </div>

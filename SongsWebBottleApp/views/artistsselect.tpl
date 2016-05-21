@@ -1,21 +1,6 @@
 % rebase('layout.tpl')
 
 <html>
-<head>
-    <title>Presentation of Artists</title>
-    <script>
-            function submitForm(form, method) {
-                var vals = [];
-
-                for (var n=0; n < form.elements.length; n++) {
-                    if(form.elements[n].className === 'toNavigate') {
-                        vals.push(form.elements[n].name + "=" + form.elements[n].value);
-                    }
-                }
-                window.parent.document.getElementById('results').contentWindow.location = method + "?" + vals.join("&");
-            }
-    </script>
-</head>
 <body>
     <h2>Presentation of Artists</h2>
     <form action="/artists" method="get"/>
@@ -37,7 +22,7 @@
             <td> <input id="bdtid" type="text" class="toNavigate" name="byto" /> </td>
         </tr>
         <tr>
-            <td>Type</td>
+            <td>Type:</td>
             <td>
                 <select id="atid" name="artisttype" class="toNavigate">
                     <option value="1">Singer</option>
@@ -50,7 +35,7 @@
     <br/>
     <br/>
     <div style="text-align:center">
-        <input type="submit" name="submitNew" value="submitNew"/>
+        <input type="submit" name="submitNew" value="Submit"/>
     </div>
 </body>
 </html>

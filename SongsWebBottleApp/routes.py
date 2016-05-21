@@ -29,3 +29,18 @@ def artistsselect():
 @view('artistsview')
 def artistsview():
     return template('artistsview')
+
+@route('/songs', method=['GET'])
+@view('songsselect')
+def songsselect():
+    if request.GET.get('submitNew','').strip():
+        result = db.selectSongs(request.GET.get('title').strip(), request.GET.get('company').strip(), request.GET.get('prodyear').strip())
+        output = template('songsview', rows=result)
+        return output
+    else:
+        return template('songsselect')
+
+@route('/songsview')
+@view('songsview')
+def songsview():
+    return template('songsview')

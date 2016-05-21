@@ -154,6 +154,8 @@
     <Content Include="static\scripts\respond.js" />
     <Content Include="static\scripts\respond.min.js" />
     <Content Include="static\scripts\_references.js" />
+    <Content Include="views\songsview.tpl" />
+    <Content Include="views\songsselect.tpl" />
     <Content Include="views\artistsview.tpl" />
     <Content Include="views\artistsselect.tpl" />
     <Content Include="views\index.tpl" />
