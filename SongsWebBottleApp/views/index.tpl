@@ -22,8 +22,17 @@
         <p><a class="btn btn-default" href="\songs">Presentation of Songs &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Microsoft Azure</h2>
-        <p>You can easily publish to Microsoft Azure using Python Tools for Visual Studio. Find out how you can host your application using a free trial today.</p>
-        <p><a class="btn btn-default" href="\artists">Learn more &raquo;</a></p>
+        <h2>Insert an Artist</h2>
+        <p>
+            Insert a new artist in the Database.
+        </p>
+        <p><a class="btn btn-default" href="\insertartist">Insert Artist &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Insert a Song</h2>
+        <p>
+            Insert a new song in the Database.
+        </p>
+        <p><a class="btn btn-default" href="\insertsong">Insert Song &raquo;</a></p>
     </div>
 </div>

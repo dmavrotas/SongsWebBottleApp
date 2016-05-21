@@ -10,10 +10,7 @@ import database_interaction as db
 @route('/home')
 @view('index')
 def home():
-    """Renders the home page."""
-    return dict(
-        year=datetime.now().year
-    )
+    return template('index')
 
 @route('/artists', method=['GET'])
 @view('artistsselect')
@@ -30,6 +27,15 @@ def artistsselect():
 def artistsview():
     return template('artistsview')
 
+@route('/insertartist')
+@view('insertartist')
+def insertartist():
+    if request.GET.get('submitNew','').strip():
+        result = db.insertArtist(request.GET.get('natid').strip(), request.GET.get('name').strip(), request.GET.get('surname').strip(), request.GET.get('byear').strip())
+        return template('insertartist')
+    else:
+        return template('insertartist')
+
 @route('/songs', method=['GET'])
 @view('songsselect')
 def songsselect():
@@ -44,3 +50,16 @@ def songsselect():
 @view('songsview')
 def songsview():
     return template('songsview')
+
+@route('/insertsong')
+@view('insertsong')
+def insertsong():
+    if request.GET.get('submitNew','').strip():
+        result = db.insertArtist(request.GET.get('natid').strip(), request.GET.get('name').strip(), request.GET.get('surname').strip(), request.GET.get('byear').strip())
+        return template('insertsong')
+    else:
+        cdsongs = db.getSongsCDs()
+        singers = db.getSongsSingers()
+        composers = db.getSongComposers()
+        songwriters = db.getSongsSongWriters()
+        return template('insertsong', cds = cdsongs, cdsingers = singers, cdcomposers = composers, cdsongwriters = songwriters)

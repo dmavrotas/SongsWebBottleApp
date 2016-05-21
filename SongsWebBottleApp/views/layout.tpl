@@ -25,6 +25,8 @@
                     <li><a href="/home">Home</a></li>
                     <li><a href="/artists">Update &amp; Search Artists</a></li>
                     <li><a href="/songs">Search Songs</a></li>
+                    <li><a href="/insertartist">Insert Artist</a></li>
+                    <li><a href="/insertsong">Insert Song</a></li>
                 </ul>
             </div>
         </div>

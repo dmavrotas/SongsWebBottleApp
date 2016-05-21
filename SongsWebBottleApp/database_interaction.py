@@ -71,8 +71,8 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
         cur.execute(selectClause + fromClause + whereClause.strip(), (parameters))
     finally :
         result = cur.fetchall()
-        return result;
         con.close()
+        return result;
 
 def updateArtist(id, name, surname, birthyear) :
     con = connection()
@@ -145,17 +145,20 @@ def insertArtist(id, name, surname, birthyear) :
 
     cur = con.cursor()
 
+    if not id or not name or not surname or not birthyear :
+        return [("STATUS"), ("BAD ENTRY")]
+
     if id :
-        insertQuery = " INSERT INTO kalitexnis (AR_TAUT, ONOMA, EPITHETO, ETOS_GEN) VALUES "
+        insertQuery = " INSERT INTO kalitexnis (AR_TAUT, ONOMA, EPITHETO, ETOS_GEN) VALUES ("
     else :
         return
     
     if id :
-        insertQuery += " ( %s "
+        insertQuery += " %s "
     if name :
         if id :
             insertQuery += " , "
-        insertQuery += " ( %s, "
+        insertQuery += " %s "
     if surname :
         if id or name :
             insertQuery += " , "
@@ -163,7 +166,9 @@ def insertArtist(id, name, surname, birthyear) :
     if birthyear :
         if id or name or surname :
             insertQuery += " , "
-        insertQuery += " CAST(%s AS UNSIGNED) )"
+        insertQuery += " CAST(%s AS UNSIGNED) "
+
+    insertQuery += " ) "
 
     parameters = [] 
 
@@ -178,8 +183,8 @@ def insertArtist(id, name, surname, birthyear) :
 
     try:
         cur.execute(insertQuery, parameters)
-    finally:
         con.commit()
+    finally:
         con.close()
         return [("STATUS"), ("OK")]    
 
@@ -224,8 +229,8 @@ def selectSongs(title, company, prodyear) :
         cur.execute(selectClause + fromClause + whereClause, (parameters))
     finally:
         result = cur.fetchall()
-        return result
         con.close()
+        return result
 
 def updateSong(title, composer, prodyear, songwriter) :
     con = connection()
@@ -298,17 +303,20 @@ def insertSong(title, composer, prodyear, songwriter) :
 
     cur = con.cursor()
 
+    if not title or not composer or not prodyear or not songwriter :
+        return [("STATUS"), ("BAD ENTRY")]
+
     if title :
-        insertQuery = " INSERT INTO tragoudi (TITLOS, SINTHETIS, ETOS_PAR, STIXOURGOS) VALUES "
+        insertQuery = " INSERT INTO tragoudi (TITLOS, SINTHETIS, ETOS_PAR, STIXOURGOS) VALUES ( "
     else :
         return
     
     if title :
-        insertQuery += " ( %s "
+        insertQuery += " %s "
     if composer :
         if title :
             insertQuery += " , "
-        insertQuery += " ( %s, "
+        insertQuery += " %s, "
     if prodyear :
         if title or composer :
             insertQuery += " , "
@@ -316,7 +324,9 @@ def insertSong(title, composer, prodyear, songwriter) :
     if songwriter :
         if title or composer or prodyear :
             insertQuery += " , "
-        insertQuery += " %s )"
+        insertQuery += " %s "
+
+    insertQuery += " ) "
 
     parameters = [] 
 
@@ -331,7 +341,63 @@ def insertSong(title, composer, prodyear, songwriter) :
 
     try:
         cur.execute(insertQuery, parameters)
-    finally:
         con.commit()
+    finally:
         con.close()
         return [("STATUS"), ("OK")] 
+
+def getSongComposers() :
+    con = connection()
+
+    cur = con.cursor()
+
+    sql = " SELECT DISTINCT t.sinthetis FROM tragoudi t " 
+
+    try:
+        cur.execute(sql)
+    finally:
+        result = cur.fetchall()
+        con.close()
+        return result
+
+def getSongsSingers() :
+    con = connection()
+
+    cur = con.cursor()
+
+    sql = " SELECT DISTINCT s.tragoudistis FROM tragoudi t inner join singer_prod s on t.titlos = s.title "
+
+    try:
+        cur.execute(sql)
+    finally:
+        result = cur.fetchall()
+        con.close()
+        return result
+
+def getSongsSongWriters() :
+    con = connection()
+
+    cur = con.cursor()
+
+    sql = " SELECT DISTINCT t.stixourgos FROM tragoudi t "
+
+    try:
+        cur.execute(sql)
+    finally:
+        result = cur.fetchall()
+        con.close()
+        return result
+
+def getSongsCDs() :
+    con = connection()
+
+    cur = con.cursor()
+
+    sql = " SELECT DISTINCT s.CD FROM tragoudi t inner join singer_prod s on t.titlos = s.title "
+
+    try:
+        cur.execute(sql)
+    finally:
+        result = cur.fetchall()
+        con.close()
+        return result
