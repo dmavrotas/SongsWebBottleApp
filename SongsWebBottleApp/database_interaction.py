@@ -181,12 +181,10 @@ def insertArtist(id, name, surname, birthyear) :
     if birthyear :
         parameters.append(birthyear)
 
-    try:
-        cur.execute(insertQuery, parameters)
-        con.commit()
-    finally:
-        con.close()
-        return [("STATUS"), ("OK")]    
+    cur.execute(insertQuery, parameters)
+    con.commit()
+    con.close()
+    return [("STATUS"), ("OK")]    
 
 # Queries about songs
 def selectSongs(title, company, prodyear) :
@@ -298,12 +296,12 @@ def deleteSong(title) :
         con.close()
         return [("STATUS"), ("OK")]    
 
-def insertSong(title, composer, prodyear, songwriter) :
+def insertSong(title, composer, prodyear, songwriter, cd, singer) :
     con = connection()
 
     cur = con.cursor()
 
-    if not title or not composer or not prodyear or not songwriter :
+    if not title or not composer or not prodyear or not songwriter or not cd or not singer :
         return [("STATUS"), ("BAD ENTRY")]
 
     if title :
@@ -316,7 +314,7 @@ def insertSong(title, composer, prodyear, songwriter) :
     if composer :
         if title :
             insertQuery += " , "
-        insertQuery += " %s, "
+        insertQuery += " %s "
     if prodyear :
         if title or composer :
             insertQuery += " , "
@@ -328,23 +326,43 @@ def insertSong(title, composer, prodyear, songwriter) :
 
     insertQuery += " ) "
 
-    parameters = [] 
+    checkEntry = " SELECT DISTINCT cd.etos FROM SINGER_PROD s INNER JOIN cd_production cd ON s.cd = cd.code_cd "
+    checkEntry += " WHERE s.tragoudistis = %s "
+    
+    checkparameters = []
 
-    if title :
-        parameters.append(title)
-    if composer :
-        parameters.append(composer)
-    if prodyear :
-        parameters.append(prodyear)
-    if songwriter :
-        parameters.append(songwriter)
-
+    check = False;
+    
+    if singer :
+        checkparameters.append(singer)
+        
     try:
+       cur.execute(checkEntry, checkparameters)
+    finally:
+        result = cur.fetchall()
+        for res in cur._rows :
+            for r in res :
+                if str(r) == prodyear :
+                    check = True
+    
+    if check == True : 
+        parameters = [] 
+
+        if title :
+            parameters.append(title)
+        if composer :
+            parameters.append(composer)
+        if prodyear :
+            parameters.append(prodyear)
+        if songwriter :
+            parameters.append(songwriter)
+
         cur.execute(insertQuery, parameters)
         con.commit()
-    finally:
         con.close()
         return [("STATUS"), ("OK")] 
+    else :
+        return [("STATUS"), ("BAD REQUEST")]
 
 def getSongComposers() :
     con = connection()

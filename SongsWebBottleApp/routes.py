@@ -27,7 +27,7 @@ def artistsselect():
 def artistsview():
     return template('artistsview')
 
-@route('/insertartist')
+@route('/insertartist', method=['GET'])
 @view('insertartist')
 def insertartist():
     if request.GET.get('submitNew','').strip():
@@ -55,8 +55,12 @@ def songsview():
 @view('insertsong')
 def insertsong():
     if request.GET.get('submitNew','').strip():
-        result = db.insertArtist(request.GET.get('natid').strip(), request.GET.get('name').strip(), request.GET.get('surname').strip(), request.GET.get('byear').strip())
-        return template('insertsong')
+        result = db.insertSong(request.GET.get('title').strip(), request.GET.get('composer').strip(), request.GET.get('prodyear').strip(), request.GET.get('songwriter').strip(), request.GET.get('cd').strip(), request.GET.get('singer').strip())
+        cdsongs = db.getSongsCDs()
+        singers = db.getSongsSingers()
+        composers = db.getSongComposers()
+        songwriters = db.getSongsSongWriters()
+        return template('insertsong', cds = cdsongs, cdsingers = singers, cdcomposers = composers, cdsongwriters = songwriters)
     else:
         cdsongs = db.getSongsCDs()
         singers = db.getSongsSingers()

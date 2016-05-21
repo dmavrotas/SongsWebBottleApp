@@ -18,7 +18,9 @@
             <td>
                 <select id="cdid" name="cd" class="toNavigate">
                     %for cd in cds:
-                    <option value="{{cd}}" >{{cd}}</option>
+                        %for c in cd:
+                            <option value="{{c}}" >{{c}}</option>
+                        %end
                     %end
                 </select>  
             </td>
@@ -28,7 +30,9 @@
             <td>
                 <select id="singerid" name="singer" class="toNavigate">
                     %for cd in cdsingers:
-                    <option value="{{cd}}">{{cd}}</option>
+                        %for c in cd:
+                            <option value="{{c}}">{{c}}</option>
+                        %end
                     %end
                 </select> 
             </td>
@@ -38,7 +42,9 @@
             <td>
                 <select id="composerid" name="composer" class="toNavigate">
                     %for cd in cdcomposers:
-                    <option value="{{cd}}">{{cd}}</option>
+                        %for c in cd:
+                            <option value="{{c}}">{{c}}</option>
+                        %end
                     %end
                 </select>
             </td>
@@ -48,7 +54,9 @@
             <td>
                 <select id="songwriterid" name="songwriter" class="toNavigate">
                     %for cd in cdsongwriters:
-                    <option value="{{cd}}">{{cd}}</option>
+                        %for c in cd:
+                            <option value="{{c}}">{{c}}</option>
+                        %end
                     %end
                 </select>
             </td>
