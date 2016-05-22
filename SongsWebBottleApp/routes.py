@@ -25,7 +25,16 @@ def artistsselect():
 @route('/artistsview')
 @view('artistsview')
 def artistsview():
-    return template('artistsview')
+    if request.GET.get('edit','').strip():
+        result = db.selectArtistByID(request.GET.get('edit').strip())
+        name = ''
+        surname = ''
+        byear = ''
+        for res in result:
+            name = res[0]
+            surname = res[1]
+            byear = res[2]
+        return template('updateartist', id=request.GET.get('edit').strip(), name = name, surname = surname, byear = byear)
 
 @route('/insertartist', method=['GET'])
 @view('insertartist')
@@ -35,6 +44,13 @@ def insertartist():
         return template('insertartist')
     else:
         return template('insertartist')
+
+@route('/updateartist', method=['GET'])
+@view('updateartist')
+def insertartist():
+    if request.GET.get('submitNew','').strip():
+        result = db.updateArtist(request.GET.get('submitNew').strip(), request.GET.get('name').strip(), request.GET.get('surname').strip(), request.GET.get('byear').strip())
+        return template('updateartist', id = '', name = '', surname = '', byear = '')
 
 @route('/songs', method=['GET'])
 @view('songsselect')

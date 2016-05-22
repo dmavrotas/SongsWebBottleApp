@@ -74,6 +74,35 @@ def selectArtists(name, surname, birthyearFrom, birthyearTo, artistType) :
         con.close()
         return result;
 
+def selectArtistByID(id) :
+    con = connection()
+
+    cur = con.cursor()
+
+    whereClause = " WHERE "
+
+    fromClause = " FROM kalitexnis k "
+    
+    if not id : 
+        whereClause = ''
+
+    if id :
+        whereClause += " AR_TAUT = %s "
+
+    selectClause = " SELECT DISTINCT k.onoma, k.epitheto, k.etos_gen "
+
+    parameters = []
+
+    if id :
+        parameters.append(id)
+
+    try :
+        cur.execute(selectClause + fromClause + whereClause.strip(), (parameters))
+    finally :
+        result = cur.fetchall()
+        con.close()
+        return result;
+
 def updateArtist(id, name, surname, birthyear) :
     con = connection()
 
@@ -99,13 +128,17 @@ def updateArtist(id, name, surname, birthyear) :
 
     parameters = [] 
 
-    if name != None :
+    if name :
         parameters.append(name)
-    if surname != None :
+    else :
+        parameters.append('   ')
+    if surname :
         parameters.append(surname)
-    if birthyear != None :
+    else :
+        parameters.append('   ')
+    if birthyear :
         parameters.append(birthyear)
-    if id != None :
+    if id :
         parameters.append(id)
 
     try:
@@ -145,7 +178,7 @@ def insertArtist(id, name, surname, birthyear) :
 
     cur = con.cursor()
 
-    if not id or not name or not surname or not birthyear :
+    if not id or not birthyear :
         return [("STATUS"), ("BAD ENTRY")]
 
     if id :
@@ -155,14 +188,8 @@ def insertArtist(id, name, surname, birthyear) :
     
     if id :
         insertQuery += " %s "
-    if name :
-        if id :
-            insertQuery += " , "
-        insertQuery += " %s "
-    if surname :
-        if id or name :
-            insertQuery += " , "
-        insertQuery += " %s "
+    if id :
+        insertQuery += " , %s , %s "
     if birthyear :
         if id or name or surname :
             insertQuery += " , "
@@ -176,8 +203,12 @@ def insertArtist(id, name, surname, birthyear) :
         parameters.append(id)
     if name :
         parameters.append(name)
+    else :
+        parameters.append('   ')
     if surname :
         parameters.append(surname)
+    else :
+        parameters.append('   ')
     if birthyear :
         parameters.append(birthyear)
 
